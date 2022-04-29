@@ -1,0 +1,62 @@
+{
+    "id": "",
+    "orderType": "Connect",
+    "externalId": "ABC123",
+    "status": "Failed",
+    "orderDate": "2022-05-04T06:00:00Z",
+    "plannedCompletionDate": "2022-05-04T06:00:00Z",
+    "accessSeekerContact":
+    {
+        "contactName": "Obi-Wan Kenobi",
+        "phoneNumber": "0111222333"
+    },
+    "dispatchDetails":
+    {
+        "authorityToLeave": "Yes",
+        "deliveryInstructions": "Drop at other door",
+        "deliveryContact":
+        {
+            "contactType": "primary",
+            "contactName": "Jawa Number 8",
+            "phoneNumber": "+61123456789",
+            "emailAddress": "tatooine@jawasalvage.com.au",
+            "notes": "Available when the suns go down"
+        },
+        "deliveryToAddress":
+        {
+            "addressLine1": "Sand Crawler",
+            "addressLine2": "",
+            "addressLine3": "",
+            "localityName": "Mos Espa",
+            "stateTerritoryCode": "Tatooine",
+            "postCode": "2145"
+        },
+        "trackingId": "track12345",
+        "deliveryStatus": "Delivered",
+        "latestEventDate": "2022-05-03T23:59:59.000Z"
+    },
+    "billingAccount":
+    {
+        "id": "BAN000000000001"
+    },
+    "note":
+    [
+        {
+            "text": "These are not the droids you are looking for",
+            "date": "2022-05-03T06:00:00Z",
+            "author": "Obi-Wan Kenobi",
+            "authorId": "1234",
+            "role": "RSP_ACTIVATION"
+        }
+    ],
+    "appointment":
+    {
+        "id": "APT000000000000",
+        "@referredType": "Appointment"
+    },
+    "relatedPlace":
+    {
+        "id": "LOC000000000000",
+        "@referredType": "GeographicAddress"
+    }
+}

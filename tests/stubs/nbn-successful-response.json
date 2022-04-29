@@ -1,0 +1,143 @@
+{
+    "id": "ORD000000000000",
+    "orderType": "Connect",
+    "externalId": "ABC123",
+    "status": "Successful",
+    "orderDate": "2022-05-04T06:00:00Z",
+    "plannedCompletionDate": "2022-05-04T06:00:00Z",
+    "accessSeekerContact":
+    {
+        "contactName": "Obi-Wan Kenobi",
+        "phoneNumber": "0111222333"
+    },
+    "dispatchDetails":
+    {
+        "authorityToLeave": "Yes",
+        "deliveryInstructions": "Drop at other door",
+        "deliveryContact":
+        {
+            "contactType": "primary",
+            "contactName": "Jawa Number 8",
+            "phoneNumber": "+61123456789",
+            "emailAddress": "tatooine@jawasalvage.com.au",
+            "notes": "Available when the suns go down"
+        },
+        "deliveryToAddress":
+        {
+            "addressLine1": "Sand Crawler",
+            "addressLine2": "",
+            "addressLine3": "",
+            "localityName": "Mos Espa",
+            "stateTerritoryCode": "Tatooine",
+            "postCode": "2145"
+        },
+        "trackingId": "track12345",
+        "deliveryStatus": "Delivered",
+        "latestEventDate": "2022-05-03T23:59:59.000Z"
+    },
+    "billingAccount":
+    {
+        "id": "BAN000000000001"
+    },
+    "note":
+    [
+        {
+            "text": "Banthas are adorable",
+            "date": "2022-05-03T06:00:00Z",
+            "author": "Jawa Number 3",
+            "authorId": "1234",
+            "role": "RSP_ACTIVATION"
+        }
+    ],
+    "appointment":
+    {
+        "id": "APT000000000000",
+        "@referredType": "Appointment"
+    },
+    "relatedPlace":
+    {
+        "id": "LOC000000000000",
+        "@referredType": "GeographicAddress"
+    },
+    "orderItem":
+    {
+        "action": "ADD",
+        "product":
+        {
+            "id": "PRI000123456789",
+            "@referredType": "Product",
+            "productSpecification":
+            {
+                "id": "NHAS",
+                "version": "1.0",
+                "specificationType": "Product Specification"
+            },
+            "priorityAssist": "Yes",
+            "orderSla": "Standard",
+            "serviceRestorationSla": "Standard",
+            "installationWorkforce": "RSP Install",
+            "customerRequiredDate": "2022-05-04"
+        }
+    },
+    "realizedResource":
+    [
+        {
+            "action": "ADD",
+            "product":
+            {
+                "id": "NTD123456789012",
+                "productSpecification":
+                {
+                    "id": "NTD",
+                    "version": "1.0",
+                    "specificationType": "Resource Specification"
+                },
+                "location": "Indoor",
+                "ntdType": "Internal",
+                "macAddress": "E8:3E:FC:5D:E6:1B",
+                "serialNumber": "ALCLF8A4644F"
+            }
+        },
+        {
+            "action": "ADD",
+            "product":
+            {
+                "id": "UNI123456789012",
+                "productSpecification":
+                {
+                    "id": "UNID",
+                    "version": "1.0",
+                    "specificationType": "Resource Specification"
+                },
+                "uniType": "UNI-D",
+                "portId": "0",
+                "speedAndDuplex": "Auto Negotiation (10/100/1000Mbps, Half/Full Duplex)",
+                "interfaceType": "10/100/1000BASE-T",
+                "uniTransientId": "UNI-D1"
+            }
+        }
+    ],
+    "realizedService":
+    [
+        {
+            "action": "ADD",
+            "product":
+            {
+                "id": "AVC123456789012",
+                "productSpecification":
+                {
+                    "id": "AVCD",
+                    "version": "1.0",
+                    "specificationType": "Service Specification"
+                },
+                "avcType": "1:1",
+                "bandwidthProfile": "D10000_U10000_Mbps_TC4_P",
+                "avcTransientID": "AVC-D1",
+                "accessLoopIdentification": "Active",
+                "cvcId": "CVC123456789012",
+                "nniCvlanId": "201",
+                "connectedToUni": "UNI-D1"
+            }
+        }
+    ]
+}
