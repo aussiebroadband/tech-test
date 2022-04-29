@@ -53,7 +53,7 @@ The following must also be observed
 
 Once received and all internal business rules have been satisfied (out of scope for this task), an application will move to an `order` queue. From this queue applications can be ordered via the appropriate B2B integration for the plan type and if successful will continue through the processes.
 
-For this task, you will be required identify and process any `nbn` application in the order queue with the following business logic
+For this task, you will be required to identify and process any `nbn` application in the order queue with the following business logic
 - a. Must pick up and process `nbn` applications every 5 minutes.
 - b. Each application must be processed on a queue (assume queue worker is configured).
 - c. Must store the Order ID on the application and progress to `complete` queue if successful.
