@@ -47,7 +47,7 @@ The following must also be observed
 - The oldest applications must be at the top of the list.
 - Plan monthly cost is stored as cents in the database, this must be displayed in human readable dollar format.
 
-***NOTE:*** You are not required to implement any additional auth features/tests, and you can assume any/all auth assocaited tests are already done. You are also not required to build out the fontend as part of this task.
+***NOTE:*** You are not required to implement any additional auth features/tests, and you can assume any/all auth associated tests are already done. You are also not required to build out the fontend as part of this task.
 
 ### Task 3 - Automate the ordering of all nbn applications
 
