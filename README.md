@@ -16,19 +16,7 @@ We are mindful of your time and the tasks below are overly simplified to accommo
 
 If you have any questions before you start any of these tasks, please email jarrod.tomholt@team.aussiebroadband.com.au.
 
-### 1. New Order Confirmation email
-
-Applications are the main entry point for all new service orders in our systems and as such when a new application is created we want to send a `New Order Confirmation` email to the customer.
-
-Content for the email will be determined at a later date and as such placeholder content is sufficient.
-
-No email should actually be sent as part of this task, and you must verify that the following details are available in the email:
-- Customers full name
-- Monthly cost and name of the chosen plan
-
-It is important to note, the request lifecyle should not be impacted by sending this email.
-
-### Task 2 - Expose a new api endpoint to list all applications
+### Task 1 - Expose a new api endpoint to list all applications
 
 We need to expose a new internal api endpoint to list all applications in the system and should accept an optional plan type filter `(null, nbn, opticomm, mobile)` for user experience. This endpoint will exist only for authenticated users and will be consumed by an SPA frontend.
 
@@ -49,7 +37,7 @@ The following must also be observed
 
 ***NOTE:*** You are not required to implement any additional auth features/tests, and you can assume any/all auth associated tests are already done. You are also not required to build out the fontend as part of this task.
 
-### Task 3 - Automate the ordering of all nbn applications
+### Task 2 - Automate the ordering of all nbn applications
 
 Once received and all internal business rules have been satisfied (out of scope for this task), an application will move to an `order` queue. From this queue applications can be ordered via the appropriate B2B integration for the plan type and if successful will continue through the processes.
 
@@ -68,6 +56,8 @@ You are required to send a `Http::post` request to the B2B endpoint (an `env('NB
 - plan name
 
 ***NOTE:*** You should not send any actual http requests as part of this task, a sample successful and failure response can be found in `test\stubs\nbn-successful-response.json` and `test\stubs\nbn-fail-response.json`.
+
+***NOTE:*** B2B = nbn business to business api
 
 ## Submissions
 
