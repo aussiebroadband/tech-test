@@ -19,7 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group([
-    'prefix' => 'application'
+    'prefix' => 'v1'
 ], function () {
-    Route::get('/', \App\Http\Controllers\Application\ListController::class);
+
+    Route::group([
+        'prefix' => 'application'
+    ], function () {
+        Route::get('/', \App\Http\Controllers\Application\ListController::class);
+    });
+
 });
