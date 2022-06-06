@@ -7,21 +7,21 @@ use Tests\TestCase;
 
 class ListControllerTest extends TestCase
 {
-    public function test_it_can_list_all_records()
+    public function test_it_can_throw_unauthorize_if_email_is_wrong()
     {
-        Application::factory(10)->create();
+//        Application::factory(10)->create();
 
         $createUserToken = $this->call('POST', $this->baseUri . '/token/create', ['email' => '' /* email here */]);
-        $user = $this->json($createUserToken);
+
+        $user = $createUserToken->getContent();
 
         $response = $this->call('POST', $this->baseUri . '/application',
             [/* params */],
             [/* cookies */],
             [/* files */],
-            ['HTTP_Authorization' => 'Bearer ' . $user->token]);
+            ['HTTP_Authorization' => 'Bearer ' . null]);
 
 
-        $response->assertSuccessful();
-        $response->assertJsonCount(10, 'data');
+        $this->assertEquals(404, $createUserToken->getStatusCode());
     }
 }
