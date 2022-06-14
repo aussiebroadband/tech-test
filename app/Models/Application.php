@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\ApplicationQueues;
+use App\Enums\ApplicationStatus;
 use App\Events\ApplicationCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +12,7 @@ class Application extends Model
     use HasFactory;
 
     protected $casts = [
-        'queue' => ApplicationQueues::class,
+        'status' => ApplicationStatus::class,
     ];
 
     protected $dispatchesEvents = [

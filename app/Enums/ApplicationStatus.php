@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ApplicationQueues: string
+enum ApplicationStatus: string
 {
     case Prelim = 'prelim';
     case PaymentRequired = 'payment required';

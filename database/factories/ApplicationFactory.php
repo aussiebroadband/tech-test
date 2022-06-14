@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Plan;
 use App\Models\Customer;
-use App\Enums\ApplicationQueues;
+use App\Enums\ApplicationStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +20,7 @@ class ApplicationFactory extends Factory
     public function definition()
     {
         return [
-            'queue' => ApplicationQueues::Prelim,
+            'status' => ApplicationStatus::Prelim,
             'customer_id' => Customer::factory(),
             'plan_id' => Plan::factory(),
             'address_1' => $this->faker->sentence(1),
