@@ -21,6 +21,7 @@ class ApplicationController extends Controller
             'applications.address_1',
             'applications.address_2',
             'applications.address_2',
+            'applications.postcode',
             'applications.city',
             'applications.state',
             'plans.type',
@@ -43,9 +44,9 @@ class ApplicationController extends Controller
             $query->where('plans.type', $plan_type);
         }
 
-        // If request type is process, return only first result, else paginate results
+        // If request type is process, do not paginate results
         if (isset($request_type) && $request_type === 'process') {
-            $result = $query->take(1)->get();
+            $result = $query->get();
         } else {
             $result = $query->paginate(3)
             ->appends(request()->query());

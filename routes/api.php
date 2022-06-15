@@ -29,5 +29,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/applications', [ApplicationApiController::class, 'getApplications'])->middleware('auth:sanctum');
 
-// Route::get('/process-nbn-orders', [NbnOrderController::class, 'dispatchNbnOrders']);
-Route::get('/process-nbn-orders', [NbnOrderController::class, 'processNbnOrders']);
+Route::get('/process-nbn-orders', [NbnOrderController::class, 'dispatchNbnOrders']);
+
+// For testing
+// Route::get('/process-nbn-orders', [NbnOrderController::class, 'processNbnOrders']);

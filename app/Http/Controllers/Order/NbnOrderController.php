@@ -18,50 +18,60 @@ class NbnOrderController extends Controller
     }
 
     public function processNbnOrders(Request $request) {
+
         try {
-
             $apps = new ApplicationController;
-            $order = $apps->getApplications($request);
-            $order_id = $order[0]->order_id;
-            $id = $order[0]->id;
+            $orders = json_decode($apps->getApplications($request));
 
-            if (!empty($order_id)) {
-                return 'Order has already been processed.';
+            foreach ($orders as $key => $order) {
+                $order_id = $order->order_id;
+                $id = $order->id;
+
+                if (!empty($order_id)) {
+                    return 'Order has already been processed.';
+                }
+
+                // Send post request with order detials
+                $data['address_1'] = $order->address_1;
+                $data['address_2'] = $order->address_2;
+                $data['city'] = $order->city;
+                $data['state'] = $order->state;
+                $data['postcode'] = $order->postcode;
+                $data['plan_name'] = $order->name;
+
+
+                NbnOrderController::sendOrderPostRequest($data);
+
+                // Update order details
+                $processed_order_id = random_int(1000, 10000);
+
+                NbnOrderController::updateOrder($id, $processed_order_id);
+                dispatch((new NbnOrderJob)->onQueue(ApplicationQueues::Complete));
             }
-
-            // Update order details
-            $processed_order_id = random_int(1000, 10000);
-            NbnOrderController::updateOrder($id, $processed_order_id);
-
-            // Send post request with order detials
-            $data['address_1'] = $order[0]->address_1;
-            $data['address_2'] = $order[0]->address_2;
-            $data['city'] = $order[0]->city;
-            $data['state'] = $order[0]->state;
-            $data['postcode'] = $order[0]->postcode;
-            $data['plan_name'] = $order[0]->plan_name;
-            NbnOrderController::sendOrderPostRequest($data);
 
             $path = base_path() . '/tests/stubs/nbn-successful-response.json';
             return json_decode(file_get_contents($path), true);
-
         } catch (\Exception $e) {
+            dispatch((new NbnOrderJob)->onQueue(ApplicationQueues::OrderFailed));
+
             $path = base_path() . '/tests/stubs/nbn-fail-response.json';
             return json_decode(file_get_contents($path), true);
         }
     }
 
     private function updateOrder($id, $processed_order_id){
-        // return 'Success';
+        return 'Success';
         Application::where('id', $id)
-                    ->update([
-                        'order_id' => $processed_order_id
-                    ]);
+        ->update([
+            'order_id' => $processed_order_id
+        ]);
     }
 
     private function sendOrderPostRequest($data) {
 
+        // Do not send request
         return 'success';
+
         $apiURL = env('NBN_B2B_ENDPOINT');
         $postInput = $data;
         $headers = [
