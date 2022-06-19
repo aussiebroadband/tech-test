@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ApiPlansController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,21 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/test', function () {
+    try {
+        $apps = Application::factory()
+        ->count(4)
+        ->make();
+    }
+    catch(\Exception $e) {
+        echo var_dump($e);
+    }
+
+    foreach ($apps as $app) {
+        echo var_dump($app);
+    }
+});
+
+Route::get('/plans/{plan?}', [ApiPlansController::class, 'index']);

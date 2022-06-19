@@ -20,15 +20,30 @@ class ApplicationFactory extends Factory
     public function definition()
     {
         return [
-            'status' => ApplicationStatus::Prelim,
-            'customer_id' => Customer::factory(),
-            'plan_id' => Plan::factory(),
+            'status' => $this->faker->randomElement(ApplicationStatus::cases()),
+            'customer_id' => function() {
+                return Customer::factory()->create()->id;
+            },
+            'plan_id' =>function() {
+                return Plan::factory()->create()->id;
+            },
             'address_1' => $this->faker->sentence(1),
             'address_2' => rand(0, 1) > 0.8 ? $this->faker->sentence(1) : null,
             'city' => $this->faker->sentence(1),
-            'state' => $this->faker->randomELement(['NSW', 'VIC', 'QLD', 'TAS', 'SA', 'WA', 'NT', 'ACT']),
+            'state' => $this->faker->randomElement(
+                [
+                    'NSW',
+                    'VIC',
+                    'QLD',
+                    'TAS',
+                    'SA',
+                    'WA',
+                    'NT',
+                    'ACT'
+                ]
+            ),
             'postcode' => $this->faker->numerify('####'),
-            'order_id' => null,
+            'order_id' => $this->faker->unique()->randomDigit
         ];
     }
 }
