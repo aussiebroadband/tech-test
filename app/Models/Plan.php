@@ -20,11 +20,11 @@ class Plan extends Model
     ];
 
     protected $casts = [
-        'mobthly_cost' => 'float',
+        'monthly_cost' => 'float',
     ];
 
     public function application(): BelongsTo
     {
-        return $this->belongsTo(Application::class, 'plan_id');
+        return $this->belongsTo(Application::class, 'plan_id', 'id');
     }
 }

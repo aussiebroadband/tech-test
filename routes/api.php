@@ -19,4 +19,5 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/plans/{plan?}', 'ApiPlansController@index');
+Route::get('/plans/{plan?}', [ApiPlansController::class, 'index'])
+    ->middleware('auth:sanctum');

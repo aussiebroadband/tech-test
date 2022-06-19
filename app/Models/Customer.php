@@ -21,7 +21,7 @@ class Customer extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'plan_id');
+        return $this->belongsTo(Customer::class, 'plan_id', 'id');
     }
 
     private function getFullName() {

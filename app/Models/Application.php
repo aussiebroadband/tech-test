@@ -26,6 +26,10 @@ class Application extends Model
         'order_id'
     ];
 
+    protected $with = [
+        'getAddress'
+    ];
+
     protected $casts = [
         'status' => ApplicationStatus::class,
     ];
@@ -36,15 +40,11 @@ class Application extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 
     public function plan(): BelongsTo
     {
-        return $this->belongsTo(Plan::class, 'plan_id');
-    }
-
-    private function getAddress() {
-        return 'lorem';
+        return $this->belongsTo(Plan::class, 'plan_id', 'id');
     }
 }
