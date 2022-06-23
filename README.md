@@ -64,9 +64,9 @@ You are required to send a `Http::post` request to the B2B endpoint (an `NBN_B2B
 
 ## Submissions
 
-Your solutions can be submitted in 2 ways: either a public PR to this repo or by emailing a zip/tarball (without the vendor dir and preserving git history) to jarrod.tomholt@team.aussiebroadband.com.au.
+Your solutions must be submitted by emailing a zip/tarball (without the vendor dir and preserving git history) to jarrod.tomholt@team.aussiebroadband.com.au.
 
-You should not require any additional packages to complete these tasks, if you do decide to add additional packages please specify your reasoning to do so in your PR/email submission.
+You should not require any additional packages to complete these tasks, if you do decide to add additional packages please specify your reasoning to do so in your submission.
 
 ## License
 
