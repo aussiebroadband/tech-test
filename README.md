@@ -16,7 +16,7 @@ We are mindful of your time and the tasks below are overly simplified to accommo
 
 If you feel you would approach any of these tasks differently given more time, please provide this as part of your submission.
 
-If you have any questions before you start any of these tasks, please email jarrod.tomholt@team.aussiebroadband.com.au.
+If you have any questions before you start any of these tasks, please email tech-test@aussiebb.com.au.
 
 ### Task 1 - Expose a new api endpoint to list all applications
 
@@ -64,7 +64,8 @@ You are required to send a `Http::post` request to the B2B endpoint (an `NBN_B2B
 
 ## Submissions
 
-Your solutions must be submitted by emailing a zip/tarball (without the vendor dir and preserving git history) to jarrod.tomholt@team.aussiebroadband.com.au.
+Your solutions must be submitted by emailing a zip/tarball (without the vendor dir and preserving git history) to 
+tech-test@aussiebb.com.au.
 
 You should not require any additional packages to complete these tasks, if you do decide to add additional packages please specify your reasoning to do so in your submission.
 
