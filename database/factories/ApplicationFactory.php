@@ -26,7 +26,7 @@ class ApplicationFactory extends Factory
             'address_1' => $this->faker->sentence(1),
             'address_2' => rand(0, 1) > 0.8 ? $this->faker->sentence(1) : null,
             'city' => $this->faker->sentence(1),
-            'state' => $this->faker->randomELement(['NSW', 'VIC', 'QLD', 'TAS', 'SA', 'WA', 'NT', 'ACT']),
+            'state' => $this->faker->randomElement(['NSW', 'VIC', 'QLD', 'TAS', 'SA', 'WA', 'NT', 'ACT']),
             'postcode' => $this->faker->numerify('####'),
             'order_id' => null,
         ];
