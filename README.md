@@ -2,7 +2,7 @@
 
 Welcome to the AussieBroadband Software Engineering Laravel Tech Test.
 
-This repository contains a Laravel 9 installation and requires php@8.1 and composer installed.
+This repository contains a Laravel 10 installation and requires at least php@8.1 and composer installed.
 
 Start by cloning/forking this repo, copy `.env.example` to `.env` and run `composer install` to get started.
 
