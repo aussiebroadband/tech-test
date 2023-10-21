@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class ApplicationController extends Controller
 {
+    private const STATUS = 'order';
     /**
      * Display a listing of the resource.
      */
@@ -81,5 +82,20 @@ class ApplicationController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Process NBN applications
+     */
+    public function processNbnApplications(Request $request)
+    {
+        // Get all NBN applications with status = order
+        $filterByStatus = 'order';
+        $applicationList = DB::table('applications')
+                         ->leftjoin('plans', 'applications.plan_id', '=', 'plans.id')
+                         ->select('applications.address_1', 'applications.address_2', 'applications.city', 'applications.state', 'applications.postcode', 'plans.name')
+                         ->where('applications.status', '=', self::STATUS)
+                         ->get();
+        return $applicationList;
     }
 }
