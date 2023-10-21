@@ -18,8 +18,9 @@ class ApplicationController extends Controller
                 ->leftjoin('customers', 'applications.customer_id', '=', 'customers.id')
                 ->leftjoin('plans', 'applications.plan_id', '=', 'plans.id')
                 ->select('applications.id',DB::raw("customers.first_name || ' ' || customers.last_name as full_name, 
-                          applications.address_1 || ' ' || applications.address_2 || ' ' || applications.city || ' ' || applications.state || ' ' || applications.postcode AS 'address'"),
-                          'plans.type', 'plans.name', 'applications.state', 'plans.monthly_cost', 'applications.order_id')
+                          applications.address_1 || ' ' || applications.address_2 || ' ' || applications.city || ' ' || applications.state || ' ' || applications.postcode AS 'address',
+                          CASE WHEN applications.status = 'complete' THEN applications.order_id ELSE '' END AS order_id"),
+                          'plans.type', 'plans.name', 'applications.state', 'plans.monthly_cost')
                 ->orderBy('applications.created_at', 'asc')
                 ->paginate(20);
 
@@ -51,8 +52,9 @@ class ApplicationController extends Controller
                 ->leftjoin('customers', 'applications.customer_id', '=', 'customers.id')
                 ->leftjoin('plans', 'applications.plan_id', '=', 'plans.id')
                 ->select('applications.id',DB::raw("customers.first_name || ' ' || customers.last_name as full_name, 
-                        applications.address_1 || ' ' || applications.address_2 || ' ' || applications.city || ' ' || applications.state || ' ' || applications.postcode AS 'address'"),
-                        'plans.type', 'plans.name', 'applications.state', 'plans.monthly_cost', 'applications.order_id')
+                         applications.address_1 || ' ' || applications.address_2 || ' ' || applications.city || ' ' || applications.state || ' ' || applications.postcode AS 'address',
+                         CASE WHEN applications.status = 'complete' THEN applications.order_id ELSE '' END AS order_id"),
+                         'plans.type', 'plans.name', 'applications.state', 'plans.monthly_cost')
                 ->where('plans.type', '=', $id)
                 ->orderBy('applications.created_at', 'asc')
                 ->paginate(20);
