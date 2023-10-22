@@ -32,8 +32,8 @@ class ProcessApplication implements ShouldQueue
      */
     public function handle()
     {
-        // $postData = Http::post(NBN_B2B_ENDPOINT, $this->data);
-        $postData = file_get_contents(resource_path('../tests/stubs/nbn-successful-response.json'));
+        $postData = Http::post(NBN_B2B_ENDPOINT, $this->data);
+        // $postData = file_get_contents(resource_path('../tests/stubs/nbn-successful-response.json'));
         // $postData = file_get_contents(resource_path('../tests/stubs/nbn-fail-response.json'));
         $response = json_decode($postData, true);
         $update = array();
