@@ -37,7 +37,10 @@ class ApplicationController extends Controller
             $order->monthly_cost = $order->monthly_cost / 100;
             return $order;
         });
-        return $orders;
+        return response()->json([
+            'status' => 'applications_fetched',
+            'data' => $orders
+        ], self::SUCCESS_CODE);
     // Now $orders contains the results with the "product_price_in_dollars" attribute.
 
     }
@@ -72,7 +75,10 @@ class ApplicationController extends Controller
             $order->monthly_cost = $order->monthly_cost / 100;
             return $order;
         });
-        return $orders;
+        return response()->json([
+            'status' => 'applications_fetched',
+            'data' => $orders
+        ], self::SUCCESS_CODE);
     }
 
     /**
