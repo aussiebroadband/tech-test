@@ -16,21 +16,15 @@ use App\Http\Controllers\ApplicationController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('/success', [SuccessController::class, 'success']);
-
 // Initial commit
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+// Middleware routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('get-customers', [CustomerController::class, 'index']);
     Route::resource('applications', ApplicationController::class);
     Route::get('process-nbn-applications', [ApplicationController::class, 'processNbnApplications']);
 });
-
-Route::get('/get-customers', [CustomerController::class, 'index']);
-Route::resource('applications', ApplicationController::class);
-Route::get('process-nbn-applications', [ApplicationController::class, 'processNbnApplications']);
 
 
