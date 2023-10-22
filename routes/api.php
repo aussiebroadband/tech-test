@@ -25,10 +25,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('get-customers', [CustomerController::class, 'index']);
+    Route::resource('applications', ApplicationController::class);
     Route::get('process-nbn-applications', [ApplicationController::class, 'processNbnApplications']);
 });
 
 Route::get('/get-customers', [CustomerController::class, 'index']);
+Route::resource('applications', ApplicationController::class);
 Route::get('process-nbn-applications', [ApplicationController::class, 'processNbnApplications']);
 
 
