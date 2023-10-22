@@ -15,7 +15,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Schedule a job to process NBN applications every 5 mins
+        $exitCode = $schedule->call('App\Http\Controllers\ApplicationController@processNbnApplications')->everyFiveMinutes();
+
     }
 
     /**
