@@ -41,8 +41,6 @@ class ApplicationController extends Controller
             'status' => 'applications_fetched',
             'data' => $orders
         ], self::SUCCESS_CODE);
-    // Now $orders contains the results with the "product_price_in_dollars" attribute.
-
     }
 
     /**
