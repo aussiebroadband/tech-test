@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Services\HttpClient;
 use Illuminate\Support\Facades\Validator;
 use App\Enums\ApplicationStatus;
+use App\Jobs\ProcessApplication;
+
 class ApplicationController extends Controller
 {
     private const STATUS  = 'order';
@@ -123,6 +125,7 @@ class ApplicationController extends Controller
                          ->select('applications.id','applications.address_1', 'applications.address_2', 'applications.city', 'applications.state', 'applications.postcode', 'plans.name')
                          ->where('applications.status', '=', self::STATUS)
                          ->get();
+                    
         // Send post request to the B2B endpoint
         $orders = $applicationList->map(function ($order) {
             $sendData = array();
@@ -132,26 +135,8 @@ class ApplicationController extends Controller
             $sendData['state']     = $order->state;
             $sendData['postcode']  = $order->postcode;
             $sendData['plan_name'] = $order->name;
-            // $postData = Http::post(NBN_B2B_ENDPOINT, $sendData);
-            $postData = file_get_contents(resource_path('../tests/stubs/nbn-successful-response.json'));
-            // $postData = file_get_contents(resource_path('../tests/stubs/nbn-fail-response.json'));
-            $response = json_decode($postData, true);
-            $update = array();
-            $responseId = $response['id'] ?? '';
-            $responseStatus = strtolower($response['status']) ?? '';
-            // Successful order
-            if(!empty($responseId) || $responseStatus == self::SUCCESS) {
-                $update['status'] = ApplicationStatus::Complete->value;
-                $update['order_id'] = $responseId;
-            } else if (empty($responseId) || $responseStatus == self::FAIL) {
-                // Failed order
-                $update['status'] = ApplicationStatus::OrderFailed->value;
-            }
-            $updateOrder = $this->update($update, $order->id);
-            $updateOrder = json_decode($updateOrder, true);
-            if(isset($updateOrder['status']) && $updateOrder['status'] = 'update_success') {
-                $order->status = $update['status'];
-            }
+            $sendData['id']        = $order->id;
+            $queueJobs = ProcessApplication::dispatch($sendData);
 
         });
 
