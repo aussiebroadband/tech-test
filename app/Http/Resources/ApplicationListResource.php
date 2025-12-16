@@ -10,8 +10,6 @@ class ApplicationListResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $customerFullName = $this->customer->first_name . ' ' . $this->customer->last_name;
-
         $addressParts = [
             $this->address_1,
             $this->address_2,
@@ -34,12 +32,12 @@ class ApplicationListResource extends JsonResource
 
         return [
             'application_id'      => $this->id,
-            'customer_full_name'  => $customerFullName,
+            'customer_full_name'  => $this->customer->full_name,
             'address'             => $address,
             'plan_type'           => $this->plan?->type,
             'plan_name'           => $this->plan?->name,
             'state'               => $this->state,
-            'plan_monthly_cost'   => $this->plan?->monthly_cost,
+            'plan_monthly_cost'   => $this->plan?->monthly_cost_dollars,
             'order_id'            => $this->when(
                 $this->status === ApplicationStatus::Complete,
                 $this->order_id

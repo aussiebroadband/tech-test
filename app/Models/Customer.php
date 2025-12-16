@@ -15,4 +15,10 @@ class Customer extends Model
     {
         return $this->hasMany(Application::class);
     }
+
+    public function getFullNameAttribute(): ?string
+    {
+        $name = trim(($this->first_name ?? '').' '.($this->last_name ?? ''));
+        return $name === '' ? null : $name;
+    }
 }

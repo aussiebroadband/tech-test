@@ -15,4 +15,15 @@ class Plan extends Model
     {
         return $this->hasMany(Application::class);
     }
+
+    public function getMonthlyCostDollarsAttribute(): ?string
+    {
+        $cents = $this->monthly_cost;
+
+        if ($cents === null) {
+            return null;
+        }
+
+        return number_format(((int) $cents) / 100, 2, '.', '');
+    }
 }
