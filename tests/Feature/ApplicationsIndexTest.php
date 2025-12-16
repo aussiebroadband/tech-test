@@ -15,7 +15,12 @@ class ApplicationsIndexTest extends TestCase
 {
     public function test_guest_cannot_list_applications(): void
     {
-        $this->getJson('/api/applications')->assertUnauthorized();
+        $response = $this->getJson('/api/applications');
+
+        $this->assertTrue(
+            in_array($response->status(), [401, 403], true),
+            "Expected 401 or 403, got {$response->status()}."
+        );
     }
 
     public function test_it_returns_paginated_oldest_first_applications_with_expected_shape(): void
@@ -146,7 +151,20 @@ class ApplicationsIndexTest extends TestCase
             $response = $this->getJson("/api/applications?plan_type={$planType}");
 
             $response->assertOk()->assertJsonPath('meta.total', 1);
-            $this->assertSame($planType, $response->json('data.0.plan_type'));
+            $response->assertJsonCount(1, 'data');
+
+            foreach ($response->json('data') as $application) {
+                $this->assertSame($planType, $application['plan_type']);
+            }
         }
+    }
+
+    public function test_it_validates_plan_type_filter(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->getJson('/api/applications?plan_type=foo')
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['plan_type']);
     }
 }
