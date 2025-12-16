@@ -22,7 +22,7 @@ class ApplicationController extends Controller
                 });
             });
 
-        $paginator = $query->paginate(30);
+        $paginator = $query->paginate(config('app.default_page_size'));
 
         return ApplicationListResource::collection($paginator);
 
