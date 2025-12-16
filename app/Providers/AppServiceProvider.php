@@ -23,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        /**
+         * avoid real http request in testing/local
+         */
+        if (app()->environment(['local', 'testing'])) {
+            Http::preventStrayRequests();
+        }
     }
 }
