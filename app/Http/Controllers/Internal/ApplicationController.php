@@ -11,6 +11,13 @@ class ApplicationController extends Controller
 {
     public function index(ApplicationListRequest $request)
     {
-        return Application::all();
+        $query = Application::query()
+            ->with(['customer', 'plan'])
+            ->orderBy('created_at', 'asc');
+
+        $paginator = $query->paginate(30);
+
+        return ApplicationListResource::collection($paginator);
+
     }
 }
