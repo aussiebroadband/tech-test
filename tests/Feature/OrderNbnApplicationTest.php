@@ -160,4 +160,28 @@ class OrderNbnApplicationTest extends TestCase
         $this->assertNull($application->order_id);
         Http::assertNothingSent();
     }
+
+    public function test_it_marks_order_failed_when_plan_name_is_missing(): void
+    {
+        $endpoint = 'https://nbn.example/orders';
+        config(['services.nbn.endpoint' => $endpoint]);
+        Http::fake();
+
+        $plan = Plan::factory()->create([
+            'type' => 'nbn',
+            'name' => '',
+        ]);
+        $application = Application::factory()->create([
+            'status' => ApplicationStatus::Order,
+            'plan_id' => $plan->id,
+            'order_id' => 'ORDER-SHOULD-BE-CLEARED',
+        ]);
+
+        OrderNbnApplication::dispatchSync($application->id);
+
+        $application->refresh();
+        $this->assertSame(ApplicationStatus::OrderFailed, $application->status);
+        $this->assertNull($application->order_id);
+        Http::assertNothingSent();
+    }
 }

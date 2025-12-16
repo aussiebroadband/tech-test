@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ApplicationIndexRequest;
 use App\Http\Resources\ApplicationResource;
 use App\Models\Application;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ApplicationController extends Controller
 {
-    public function index(ApplicationIndexRequest $request)
+    public function index(ApplicationIndexRequest $request): AnonymousResourceCollection
     {
         $query = Application::query()
             ->with(['customer', 'plan'])

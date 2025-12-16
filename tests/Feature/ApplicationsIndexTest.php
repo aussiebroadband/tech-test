@@ -23,6 +23,22 @@ class ApplicationsIndexTest extends TestCase
         );
     }
 
+    public function test_it_returns_empty_paginated_response_when_no_applications_exist(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $response = $this->getJson('/api/applications');
+
+        $response->assertOk()
+            ->assertJsonCount(0, 'data')
+            ->assertJsonPath('meta.total', 0)
+            ->assertJsonStructure([
+                'data',
+                'links' => ['first', 'last', 'prev', 'next'],
+                'meta' => ['current_page', 'from', 'last_page', 'path', 'per_page', 'to', 'total'],
+            ]);
+    }
+
     public function test_it_returns_paginated_oldest_first_applications_with_expected_shape(): void
     {
         Sanctum::actingAs(User::factory()->create());

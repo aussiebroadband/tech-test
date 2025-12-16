@@ -15,8 +15,7 @@ class ApplicationIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'plan_type' => ['nullable', Rule::in(['nbn', 'opticomm', 'mobile'])],
+            'plan_type' => ['nullable', 'string', Rule::in(['nbn', 'opticomm', 'mobile'])],
         ];
     }
 }
-
