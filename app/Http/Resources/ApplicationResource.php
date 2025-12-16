@@ -34,7 +34,7 @@ class ApplicationResource extends JsonResource
         ];
 
         // Only include order_id if status is 'complete'
-        if ($this->status === 'complete') {
+        if ($this->status?->value === 'complete') {
             $data['order_id'] = $this->order_id;
         }
 
