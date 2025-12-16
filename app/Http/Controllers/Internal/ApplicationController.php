@@ -11,9 +11,16 @@ class ApplicationController extends Controller
 {
     public function index(ApplicationListRequest $request)
     {
+        $planType = $request->validated('plan_type');
+        
         $query = Application::query()
             ->with(['customer', 'plan'])
-            ->orderBy('created_at', 'asc');
+            ->orderBy('created_at', 'asc')
+            ->when($planType, function($applicationQuery) use ($planType) {
+                $applicationQuery->whereHas('plan', function($planQuery) use ($planType) {
+                    $planQuery->where('type', $planType);
+                });
+            });
 
         $paginator = $query->paginate(30);
 
