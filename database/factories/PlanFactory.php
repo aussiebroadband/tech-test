@@ -22,4 +22,28 @@ class PlanFactory extends Factory
             'monthly_cost' => $this->faker->numerify('####'),
         ];
     }
+
+    public function nbn()
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'nbn',
+            'name' => 'NBN Standard',
+        ]);
+    }
+
+    public function opticomm()
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'opticomm',
+            'name' => 'Opticomm Fibre',
+        ]);
+    }
+
+    public function mobile()
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'mobile',
+            'name' => 'Mobile Unlimited',
+        ]);
+    }
 }

@@ -31,4 +31,26 @@ class ApplicationFactory extends Factory
             'order_id' => null,
         ];
     }
+
+    public function complete()
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => ApplicationStatus::Complete,
+            'order_id' => $this->faker->randomDigitNotNull()
+        ]);
+    }
+
+    public function order()
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => ApplicationStatus::Order,
+        ]);
+    }
+
+    public function withAddress2()
+    {
+        return $this->state(fn (array $attributes) => [
+            'address_2' => $this->faker->sentence(1),
+        ]);
+    }
 }
