@@ -9,10 +9,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Http;
+use App\Services\Nbn\NbnClientInterface;
 use Illuminate\Support\Facades\Log;
 use Throwable;
-
 
 class ProcessNbnOrderJob implements ShouldQueue
 {
@@ -22,34 +21,31 @@ class ProcessNbnOrderJob implements ShouldQueue
 
     public function __construct(public Application $application) {}
 
-    public function handle(): void
+    public function handle(NbnClientInterface $client): void
     {
-        $endpoint = env('NBN_B2B_ENDPOINT');
+        $application = $this->application->load(['plan']);
 
-        if (!$endpoint) {
-            $this->error('Missing NBN_B2B_ENDPOINT (services.nbn.endpoint). No jobs dispatched.');
+        if (!$application) {
+            Log::warning('NBN order job aborted: application not found', [
+                'application_id' => $this->application->id,
+            ]);
             return;
-        }        
-        
-        $application = $this->application->load('plan');
-
-        if (!$application) return;
+        }
 
         if ($application->status !== ApplicationStatus::Order) return;
         if (!$application->plan || $application->plan->type !== 'nbn') return;
 
-        try {
-            $payload = [
-                'address_1' => $application->address_1,
-                'address_2' => $application->address_2,
-                'city'      => $application->city,
-                'state'     => $application->state,
-                'postcode'  => $application->postcode,
-                'plan_name' => $application->plan->name,
-            ];
+        $payload = [
+            'address_1' => $application->address_1,
+            'address_2' => $application->address_2,
+            'city'      => $application->city,
+            'state'     => $application->state,
+            'postcode'  => $application->postcode,
+            'plan_name' => $application->plan->name,
+        ];
 
-            $response = Http::post($endpoint, $payload);
-            $data = $response->json();
+        try {
+            $data = $client->submitOrder($payload);
 
             $isSuccessful = ($data['status'] ?? null) === 'Successful' && !empty($data['id']);
 
@@ -62,7 +58,6 @@ class ProcessNbnOrderJob implements ShouldQueue
                     'application_id' => $application->id,
                     'order_id' => $application->order_id,
                 ]);
-
                 return;
             }
 
@@ -73,7 +68,6 @@ class ProcessNbnOrderJob implements ShouldQueue
                 'application_id' => $application->id,
                 'response_status' => $data['status'] ?? null,
                 'response_id' => $data['id'] ?? null,
-                'http_status' => $response->status(),
             ]);
         } catch (Throwable $e) {
             $application->status = ApplicationStatus::OrderFailed;
