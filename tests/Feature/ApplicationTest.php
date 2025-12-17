@@ -72,7 +72,27 @@ class ApplicationTest extends TestCase
 
     public function test_returns_by_application_created_date_asc(): void
     {
-        
+        $customer = Customer::factory()->create();
+        $plan = Plan::factory()->create(['type' => 'nbn', 'monthly_cost' => 1234]);
+
+        $old = Application::factory()->create([
+            'customer_id' => $customer->id,
+            'plan_id' => $plan->id,
+            'created_at' => now()->subDays(10),
+        ]);
+
+        $new = Application::factory()->create([
+            'customer_id' => $customer->id,
+            'plan_id' => $plan->id,
+            'created_at' => now()->subDays(1),
+        ]);
+
+        $res = $this->getJson($this->url);
+
+        $res->assertOk();
+
+        $ids = array_column($res->json('data'), 'application_id');
+        $this->assertSame([$old->id, $new->id], array_slice($ids, 0, 2));
     }
 
     public function test_returns_human_readable_monthly_cost(): void
