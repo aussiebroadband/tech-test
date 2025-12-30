@@ -31,4 +31,32 @@ class ApplicationFactory extends Factory
             'order_id' => null,
         ];
     }
+
+    public function prelim(): ApplicationFactory|Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => ApplicationStatus::Prelim,
+            ];
+        });
+    }
+
+    public function complete(): ApplicationFactory|Factory
+    {
+        return $this->state(function () {
+           return [
+               'status' => ApplicationStatus::Complete,
+               'order_id' => $this->faker->uuid(),
+           ];
+        });
+    }
+
+    public function orderingNbnApplication(): ApplicationFactory|Factory {
+        return $this->state(function () {
+           return [
+               'status' => ApplicationStatus::Order,
+               'plan_id' => Plan::factory()->nbn()->create()
+           ];
+        });
+    }
 }

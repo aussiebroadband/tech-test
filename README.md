@@ -1,3 +1,7 @@
+# Notes (PLEASE READ!!)
+- Run `php artisan migrate:fresh --seed` for dummy data
+- Added `guzzlehttp/guzzle` package for testing api fake response on nbn_b2b_application
+
 # Overview
 
 Welcome to the AussieBroadband Software Engineering Laravel Tech Test.
@@ -72,3 +76,4 @@ You should not require any additional packages to complete these tasks, if you d
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+

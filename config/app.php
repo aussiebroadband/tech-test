@@ -123,6 +123,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'nbn_b2b_endpoint' => env('NBN_B2B_ENDPOINT'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
