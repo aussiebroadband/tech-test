@@ -2,13 +2,38 @@
 
 Welcome to the AussieBroadband Software Engineering Laravel Tech Test.
 
-This repository contains a Laravel 12 installation and requires at least php@8.2 and composer installed.
+This repository is a Laravel 12 application targeting PHP 8.2+. The recommended way to run it is via Docker Compose — you do not need PHP or Composer installed locally.
 
-Start by cloning/forking this repo, copy `.env.example` to `.env` and run `composer install` to get started.
+## Quick start
 
-An in memory sqlite database is already configured for testing.
+```
+docker compose up
+```
 
-Should you wish to spin up an environment to suit your workflow during development, you are completely free to do so, however keep in mind that solutions will be evaluated on the tests you write, no additional setup should be required for `php artisan test` to be executed.
+That command builds the image on first run, installs Composer dependencies, creates `.env`, generates `APP_KEY`, runs migrations, and seeds a default user. The app is then served at <http://localhost:8000>.
+
+Default test user: `test@example.com` / `password`.
+
+### Running things
+
+```
+docker compose exec app php artisan test          # run the test suite
+docker compose exec app vendor/bin/pint           # apply code style
+docker compose exec app php artisan tinker        # repl
+```
+
+If your task 2 solution needs a queue worker or scheduler running, start them in a separate terminal — the Compose stack does not run them by default:
+
+```
+docker compose exec app php artisan queue:work
+docker compose exec app php artisan schedule:work
+```
+
+`compose.yaml` also includes a commented-out Mailpit service (web UI on <http://localhost:8025>) if you want to inspect outgoing mail; uncomment it and set `MAIL_MAILER=smtp`, `MAIL_HOST=mailpit`, `MAIL_PORT=1025` in `.env`.
+
+An in-memory sqlite database is configured for the test suite (`phpunit.xml`); no extra setup is required for `php artisan test` to run.
+
+If you prefer to work without Docker that is fine too; you'll need PHP 8.2+, Composer, and the `pdo_sqlite` extension. Solutions are still evaluated on the tests you write, regardless of how you run them.
 
 ## The Tasks
 
