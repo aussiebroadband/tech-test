@@ -1,7 +1,3 @@
-# Dev image for ad-hoc PHP/Composer/Artisan commands.
-# This is the minimal image used during modernisation and day-to-day dev
-# until the full docker-compose environment is built. Other compose
-# services (web, queue, scheduler) will likely extend or replace this.
 FROM php:8.3-cli
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -20,3 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
+
+COPY .docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/app.Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  # Optional: Mailpit catches outgoing mail and exposes a web UI on
+  # http://localhost:8025. To enable, uncomment this block, set
+  # MAIL_MAILER=smtp / MAIL_HOST=mailpit / MAIL_PORT=1025 in .env, and
+  # run `docker compose up`.
+  #
+  # mailpit:
+  #   image: axllent/mailpit:latest
+  #   ports:
+  #     - "1025:1025"
+  #     - "8025:8025"
