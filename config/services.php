@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'nbn' => [
+        'endpoint' => env('NBN_B2B_ENDPOINT'),
+    ],
+
 ];
