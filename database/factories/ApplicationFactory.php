@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Plan;
-use App\Models\Customer;
 use App\Enums\ApplicationStatus;
+use App\Models\Application;
+use App\Models\Customer;
+use App\Models\Plan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Application>
+ * @extends Factory<Application>
  */
 class ApplicationFactory extends Factory
 {
