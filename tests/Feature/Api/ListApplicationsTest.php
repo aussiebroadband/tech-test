@@ -23,6 +23,14 @@ class ListApplicationsTest extends TestCase
         $this->getJson(route('applications.index'))->assertUnauthorized();
     }
 
+    public function test_guests_get_a_json_401_even_without_a_json_accept_header(): void
+    {
+        // A plain browser or curl request must not be redirected to a login page this API does not have.
+        $this->get(route('applications.index'))
+            ->assertUnauthorized()
+            ->assertExactJson(['message' => 'Unauthenticated.']);
+    }
+
     public function test_it_returns_only_the_agreed_application_fields(): void
     {
         $application = Application::factory()
