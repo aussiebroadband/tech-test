@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PlanType;
 use App\Models\Plan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +20,7 @@ class PlanFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(rand(1, 3)),
-            'type' => $this->faker->randomElement(['nbn', 'opticomm', 'mobile']),
+            'type' => $this->faker->randomElement(PlanType::cases()),
             'monthly_cost' => $this->faker->numerify('####'),
         ];
     }
