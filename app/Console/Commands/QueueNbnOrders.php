@@ -24,19 +24,21 @@ class QueueNbnOrders extends Command
             return self::FAILURE;
         }
 
-        $queued = 0;
+        $found = 0;
 
         $applications = Application::query()
             ->withStatus(ApplicationStatus::Order)
             ->ofPlanType(PlanType::Nbn)
             ->lazyById();
 
+        // OrderNbnApplication is unique per application, so one that is still
+        // waiting on the queue from an earlier run is skipped, not queued twice.
         foreach ($applications as $application) {
             OrderNbnApplication::dispatch($application);
-            $queued++;
+            $found++;
         }
 
-        $this->info("Queued {$queued} nbn application(s) for ordering.");
+        $this->info("Found {$found} nbn application(s) awaiting order; queued each one not already on the queue.");
 
         return self::SUCCESS;
     }

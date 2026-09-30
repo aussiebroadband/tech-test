@@ -57,7 +57,7 @@ class QueueNbnOrdersTest extends TestCase
         $this->applicationFor(PlanType::Mobile, ApplicationStatus::Order);
 
         $this->artisan(QueueNbnOrders::class)
-            ->expectsOutput('Queued 2 nbn application(s) for ordering.')
+            ->expectsOutput('Found 2 nbn application(s) awaiting order; queued each one not already on the queue.')
             ->assertSuccessful();
 
         Queue::assertPushed(OrderNbnApplication::class, 2);
