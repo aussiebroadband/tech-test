@@ -4,11 +4,13 @@ This document explains what was built for the two tasks in `README.md`, the deci
 
 No additional packages were added. Everything uses Laravel 12 and Sanctum as shipped in `composer.json`.
 
+For a step-by-step run of both tasks with screenshots and real responses, see [WALKTHROUGH.md](WALKTHROUGH.md).
+
 ## Running it
 
 ```
 docker compose up
-docker compose exec app php artisan test               # 39 tests, 110 assertions
+docker compose exec app php artisan test               # 40 tests, 112 assertions
 docker compose exec app php artisan queue:work         # task 2: process queued orders
 docker compose exec app php artisan schedule:work      # task 2: run the five-minute schedule
 ```
@@ -17,7 +19,7 @@ Task 2 needs `NBN_B2B_ENDPOINT` set in `.env` before the scheduler will queue an
 
 ## Commits
 
-The branch has five code commits on top of `main`, each self-contained and green, followed by this document:
+The branch has six code commits on top of `main`, each self-contained and green, plus two documentation commits (this document, then the walkthrough):
 
 | Commit | What it does |
 | --- | --- |
@@ -26,6 +28,7 @@ The branch has five code commits on top of `main`, each self-contained and green
 | `feat(api): list applications endpoint (task 1)` | Task 1. |
 | `feat(orders): automate nbn B2B ordering… (task 2)` | Task 2. |
 | `fix(orders): report applications found…` | Corrects a misleading log line found during an end-to-end run. |
+| `fix(api): answer unauthenticated API requests with a JSON 401…` | Guests without a JSON `Accept` header got a 500, not a 401. Found in the browser walkthrough. |
 
 ## Groundwork shared by both tasks
 
@@ -68,6 +71,7 @@ How each requirement is met:
 - **Oldest first.** Ordered by `created_at`, then `id`. The `id` tie-break keeps page boundaries stable when several applications share a timestamp; without it, rows can repeat or go missing between pages.
 - **Human-readable dollars.** `8999` becomes `"$89.99"` and `123456` becomes `"$1,234.56"`. I used `number_format` rather than `Number::currency()` because the Docker image does not include the `intl` extension that `Number::currency()` needs.
 - **Filter.** A missing or empty `plan_type` lists everything. An unknown value returns `422` with a validation error, so a typo is not silently treated as "all".
+- **Authentication.** A request without a valid token gets `401 {"message":"Unauthenticated."}`, even from a plain browser or `curl` that does not send `Accept: application/json`. Out of the box, Laravel redirects such guests to a `login` route, which this API-only app does not define, so the request crashed with a 500. `bootstrap/app.php` now skips that redirect for `api/*` and always renders API errors as JSON. This was found while exercising the endpoint in a real browser: the original test used `getJson()`, which always sends the JSON header, so it could not see the bug.
 - **Scalability.** `customer` and `plan` are eager loaded. `AppServiceProvider` enables `Model::preventLazyLoading()` outside production, so an N+1 regression fails the test suite instead of reaching production.
 
 ### Interpretation to confirm
@@ -118,7 +122,7 @@ All HTTP is faked. The base `TestCase` calls `Http::preventStrayRequests()`, so 
 
 | File | Covers |
 | --- | --- |
-| `tests/Feature/Api/ListApplicationsTest.php` | Guests get 401; the exact field set; `order_id` only when complete; oldest first; stable tie-break; filter by each plan type; no filter; empty filter; invalid filter returns 422; page size and page 2; filter kept in pagination links; dollar formatting. |
+| `tests/Feature/Api/ListApplicationsTest.php` | Guests get 401, with and without a JSON `Accept` header; the exact field set; `order_id` only when complete; oldest first; stable tie-break; filter by each plan type; no filter; empty filter; invalid filter returns 422; page size and page 2; filter kept in pagination links; dollar formatting. |
 | `tests/Feature/Jobs/OrderNbnApplicationTest.php` | Success using the provided stub; exact payload and URL; failed stub; 400/422/500/503 responses; "Successful" with an empty id; connection error; an application that left `order` is not re-ordered. |
 | `tests/Feature/Console/QueueNbnOrdersTest.php` | Scheduled at `*/5 * * * *`; only nbn applications in `order` are queued; no duplicate while a job is pending; nothing queued without an endpoint; end to end through the sync queue to `complete` and `order failed`. |
 | `tests/Unit/Models/*` | `full_name` with and without a last name; cents-to-dollars formatting. |
@@ -131,6 +135,7 @@ All HTTP is faked. The base `TestCase` calls `Http::preventStrayRequests()`, so 
 
 - **`database/factories/UserFactory.php`.** It hardcoded a cost-10 bcrypt hash, but `phpunit.xml` sets `BCRYPT_ROUNDS=4`, and Laravel 12's `hashed` cast rejects a hash it cannot verify against the configured cost. As shipped, any test calling `User::factory()` threw `Could not verify the hashed value's configuration`. It now uses the current Laravel skeleton's `Hash::make('password')`, memoised across the run.
 - **`database/factories/PlanFactory.php`** picks from `PlanType::cases()`.
+- **`bootstrap/app.php`.** Guests on `api/*` routes are no longer redirected to the undefined `login` route, and API errors always render as JSON (see Task 1, Authentication). This also fixes the existing `/api/user` route, which had the same 500.
 - **`routes/api.php`.** The existing `/user` route moved into an `auth:sanctum` group alongside the new route. Its behaviour is unchanged.
 
 ## Assumptions and questions
